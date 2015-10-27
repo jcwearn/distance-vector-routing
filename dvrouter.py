@@ -3,6 +3,8 @@ class DVRouter():
 
     def removeLink():
 
-    def export(neighbor):
+    def exportDistanceVector(neighbor):
 
-    def import(neighbor-table):
+    def importDistanceVector(neighbor-table):
+
+    def recomputeTable():
