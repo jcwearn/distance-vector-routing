@@ -28,7 +28,9 @@ class DVRouter():
         self.importedTables = neighborTables
 
     def updateRoutingTable(self):
-        d, p = bellmanFord(self.getImportedTables(), self.getRouterName())
+        graph = self.getImportedTables()
+        source = self.getRouterName()
+        d, p = bellmanFord(graph, source)
 
     def formatNeighborTables(self, neighbors):
         neighborTables = {}
