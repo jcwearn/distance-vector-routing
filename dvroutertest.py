@@ -40,7 +40,7 @@ class TestDVRouter(unittest.TestCase):
         router1 = dvrouter.DVRouter('A')
         router1.addLink('B', 1.5)
         router1.addLink('C', 2)
-        expectedTable = {'A': 0, 'C': 2, 'B': 1.5}
+        expectedTable = {'B': 1.5, 'C': 2}
         self.assertEqual(router1.exportDistanceVector('B'), expectedTable)
         
     def test_importDistanceVectors(self):
@@ -48,17 +48,25 @@ class TestDVRouter(unittest.TestCase):
         router1 = dvrouter.DVRouter('A')
         router1.addLink('B', 1.5)
         router1.addLink('C', 2)
+
         router2 = dvrouter.DVRouter('B')
         router2.addLink('A', 1.5)
         router2.addLink('C', 4)
-        neighborTable = router2.getRoutingTable()
-        expectedTable = {'A': 1.5, 'C': 4, 'B': 0}
-        router1.importDistanceVectors(neighborTable)
-        self.assertEqual(router1.getImportedTable(), expectedTable)        
+        neighborTable1 = router2.getRoutingTableExclusive()
+
+        router3 = dvrouter.DVRouter('C')
+        router3.addLink('A', 2)
+        router3.addLink('B', 4)
+        router3.addLink('D', 1)
+        neighborTable2 = router3.getRoutingTableExclusive()        
         
+        expectedTable = {'A': {'C': 2, 'B': 1.5}, 'C': {'A': 2, 'B': 4, 'D': 1}, 'B': {'A': 1.5, 'C': 4}}
+        router1.importDistanceVectors({'B':neighborTable1, 'C':neighborTable2})
+        self.assertEqual(router1.getImportedTables(), expectedTable)
+
     def test_updateRoutingTable(self):
         '''Test updating the routing table via the Bellman-Ford algorithm'''
-
+        
         
 if __name__ == '__main__':
     unittest.main()        
