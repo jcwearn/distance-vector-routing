@@ -69,6 +69,7 @@ class TestDVRouter(unittest.TestCase):
         router1 = dvrouter.DVRouter('A')
         router1.addLink('B', 1.5)
         router1.addLink('C', 2)
+        router1.addLink('G', 0.5)
 
         router2 = dvrouter.DVRouter('B')
         router2.addLink('A', 1.5)
@@ -82,6 +83,7 @@ class TestDVRouter(unittest.TestCase):
         router3.addLink('B', 4)
         router3.addLink('D', 1)
         router3.addLink('F', 0.5)
+        router3.addLink('G', 0.5)
         neighborTable2 = router3.getRoutingTableExclusive()
 
         router4 = dvrouter.DVRouter('D')
@@ -101,10 +103,25 @@ class TestDVRouter(unittest.TestCase):
         router6.addLink('E', 2)
         neighborTable5 = router6.getRoutingTableExclusive()
 
-        neighborTables = router1.formatNeighborTables([router2, router3, router4, router5, router6])
-        
+        router7 = dvrouter.DVRouter('G')
+        router7.addLink('A', 0.5)
+        router7.addLink('C', 0.5)
+        neighborTable6 = router7.getRoutingTableExclusive()
+
+        neighborTables = router1.formatNeighborTables([router2, router3, router4, router5, router6, router7])
         router1.importDistanceVectors(neighborTables)
         router1.updateRoutingTable()
+
+        firstHop = router1.getFirstHop()
+        self.assertEqual(firstHop['A'], 'A')
+        self.assertEqual(firstHop['B'], 'B')
+        self.assertEqual(firstHop['C'], 'G')
+        self.assertEqual(firstHop['F'], 'G')
+        routingTable = router1.getRoutingTable()
+        self.assertEqual(routingTable['A'], 0)
+        self.assertEqual(routingTable['B'], 1.5)
+        self.assertEqual(routingTable['C'], 1)
+        self.assertEqual(routingTable['F'], 1.5)                
         
 if __name__ == '__main__':
     unittest.main()        
