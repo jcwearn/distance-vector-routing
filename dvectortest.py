@@ -60,5 +60,19 @@ class TestDVector(unittest.TestCase):
         self.assertIn('D', dv.getRoutes())
         self.assertEqual(dv.distance('D'), 2)
 
+    def test_removeRoute(self):
+        '''test removeRoute method which removes a route 'destination' from a routing table '''
+        dv = dvector.DVector('A')
+        dv.loadRoute('B', 4.5)
+        self.assertIn('B', dv.getRoutes())
+        dv.removeRoute('B')
+        self.assertNotIn('B', dv.getRoutes())
+
+        dv = dvector.DVector('B')
+        dv.loadRoute('C', 4)
+        self.assertIn('C', dv.getRoutes())
+        dv.removeRoute('C')
+        self.assertNotIn('C', dv.getRoutes())
+
 if __name__ == '__main__':
     unittest.main()
