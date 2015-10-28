@@ -32,6 +32,12 @@ def parseFile(filename):
 
     return parsedContent, content
 
+def importAndUpdateRouters(router, exportedTables):
+    neighborTables = exportedTables.copy()
+    del neighborTables[router.getRouterName()]
+    router.importDistanceVectors(neighborTables)
+    router.updateRoutingTable()
+
 class DVSimulator:
     '''Creates a simulation of a network of routers using a distance vector algorithm to find the routes between nodes.'''
     def __init__(self, networkConfig):
@@ -56,12 +62,21 @@ class DVSimulator:
 
         return routers
 
+    def buildExport(self):
+        routers = self.getRouters()
+        routerList = []
+        for key in routers:
+            routerList.append(routers[key])
+
+        return routerList[0].formatNeighborTables(routerList)
+
     def getRouters(self):
         return self.routers
     
 if __name__ == '__main__':
     args = parseArgs()
     networkConfig, rawText = parseFile(args.config_file)
+
     simulator = DVSimulator(networkConfig);
     routers = simulator.getRouters()
 
@@ -81,4 +96,25 @@ if __name__ == '__main__':
             else:
                 extraSpace = ''
             print '  ' + route  + '   ' + extraSpace + str(routingTable[route])  + '   ' + route
+        print
+        print
+
+    export =  simulator.buildExport()
+    for key in routers:
+        importAndUpdateRouters(routers[key], export)
+
+    for key in routers:
+        print 'Routing table at ' + key
+        print 'Dest dist firstHop'
+        print '---- ---- --------'
+        routingTable = routers[key].getRoutingTable()
+        firstHop = routers[key].getFirstHop()
+        
+        for route in routingTable:
+            if isinstance(routingTable[route], int):
+                extraSpace = '  '
+            else:
+                extraSpace = ''
+            print '  ' + route  + '   ' + extraSpace + str(routingTable[route])  + '   ' + route
+        print
         print
