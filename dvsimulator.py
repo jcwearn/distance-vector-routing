@@ -30,17 +30,55 @@ def parseFile(filename):
             if isNumber(col):
                 col = float(col)
 
-    return parsedContent
+    return parsedContent, content
 
 class DVSimulator:
     '''Creates a simulation of a network of routers using a distance vector algorithm to find the routes between nodes.'''
     def __init__(self, networkConfig):
-        pass
+        self.routers = self.buildNetwork(networkConfig)
 
     def dist(firstRouter, secondRouter):
         pass
+
+    def buildNetwork(self, networkConfig):
+        routers = {}
+        for row in networkConfig:
+            firstRouter = row[0]
+            secondRouter = row[1]
+            distance = row[2]
+            if firstRouter not in routers.keys():
+                routers[firstRouter] = dvrouter.DVRouter(firstRouter)
+            if secondRouter not in routers.keys():
+                routers[secondRouter] = dvrouter.DVRouter(secondRouter)
+
+            routers[firstRouter].addLink(secondRouter, distance)
+            routers[secondRouter].addLink(firstRouter, distance)
+
+        return routers
+
+    def getRouters(self):
+        return self.routers
     
 if __name__ == '__main__':
     args = parseArgs()
-    networkConfig = parseFile(args.config_file)
-    simulator = DVSimulator(networkConfig);    
+    networkConfig, rawText = parseFile(args.config_file)
+    simulator = DVSimulator(networkConfig);
+    routers = simulator.getRouters()
+
+    print 'Simulator starting, network config file: ' + args.config_file
+    print 'Network config file contents:'
+    for row in rawText:
+        print row.rstrip('\n')
+    print '\nInitial tables before DV iterations:'
+    for key in routers:
+        print 'Routing table at ' + key
+        print 'Dest dist firstHop'
+        print '---- ---- --------'
+        routingTable = routers[key].getRoutingTable()
+        for route in routingTable:
+            if isinstance(routingTable[route], int):
+                extraSpace = '  '
+            else:
+                extraSpace = ''
+            print '  ' + route  + '   ' + extraSpace + str(routingTable[route])  + '   ' + route
+        print
