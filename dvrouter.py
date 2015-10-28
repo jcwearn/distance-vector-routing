@@ -8,6 +8,7 @@ class DVRouter():
         self.routerName = routerName
         self.dvector  = distanceVector
         self.routingTable = distanceVector.getRoutes()
+        self.firstHop = {}
         self.importedTables = {}
         
     def addLink(self, neighbor, dist):
@@ -32,8 +33,8 @@ class DVRouter():
         source = self.getRouterName()
         neighbors = self.getRoutingTableExclusive()
         distance, firstHop = bellmanFord(graph, source, neighbors)
-        print distance
-        print firstHop 
+        self.routingTable = distance
+        self.firstHop = firstHop
 
     def formatNeighborTables(self, neighbors):
         neighborTables = {}
@@ -56,6 +57,9 @@ class DVRouter():
         routingTableExclusive = self.routingTable.copy()
         del routingTableExclusive[self.getRouterName()]
         return routingTableExclusive
+
+    def getFirstHop(self):
+        return self.firstHop
 
     def getImportedTables(self):
         return self.importedTables
