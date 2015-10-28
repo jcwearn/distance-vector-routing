@@ -78,9 +78,11 @@ class TestDVRouter(unittest.TestCase):
         router3 = dvrouter.DVRouter('C')
         router3.addLink('A', 2)
         router3.addLink('B', 4)
-        neighborTable2 = router3.getRoutingTableExclusive()        
+        neighborTable2 = router3.getRoutingTableExclusive()
+
+        neighborTables = router1.formatNeighborTables([router2, router3])
         
-        router1.importDistanceVectors({'B':neighborTable1, 'C':neighborTable2})
+        router1.importDistanceVectors(neighborTables)
         router1.updateRoutingTable()
         
 if __name__ == '__main__':
