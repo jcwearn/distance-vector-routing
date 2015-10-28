@@ -6,22 +6,21 @@ class DVRouter():
     def __init__(self, routerName):
         '''Constructor.  This method takes in a routerName and initializes all the necessary instance variables for a router.'''
         distanceVector = dvector.DVector(routerName)
-        routingTable = distanceVector.getRoutes
         self.routerName = routerName
         self.dvector  = distanceVector
-        self.routingTable = distanceVector.getRoutes()
+        self.routingTable = distanceVector.destinations()
         self.firstHop = {}
         self.importedTables = {}
         
     def addLink(self, neighbor, dist):
         '''Adds a link with distance 'dist' from self to another router.  It takes in the neighbor routerName and distance value.'''
         self.dvector.loadRoute(neighbor, dist)
-        self.routingTable = self.getDVector().getRoutes()
+        self.routingTable = self.getDVector().destinations()
 
     def removeLink(self, neighbor):
         '''Removes a link between self and a neighbor router.  It takes in a neighbor routerName.'''
         self.dvector.removeRoute(neighbor)
-        self.routingTable = self.getDVector().getRoutes()
+        self.routingTable = self.getDVector().destinations()
 
     def exportDistanceVector(self):
         '''Prepares a distance vector table to be exported to a neighbor.  Returns the distance vector table'''
