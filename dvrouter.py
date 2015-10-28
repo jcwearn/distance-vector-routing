@@ -29,8 +29,14 @@ class DVRouter():
 
     def updateRoutingTable(self):
         d, p = bellmanFord(self.getImportedTables(), self.getRouterName())
-        print d
-        print p
+
+    def formatNeighborTables(self, neighbors):
+        neighborTables = {}
+        for neighbor in neighbors:
+            key = neighbor.getRouterName()
+            value = neighbor.getRoutingTableExclusive()
+            neighborTables[key] = value
+        return neighborTables
 
     def getRouterName(self):
         return self.routerName
