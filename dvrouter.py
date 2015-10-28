@@ -1,7 +1,7 @@
 import dvector
 from bellmanford import bellmanFord
 
-class DVRouter():
+class DVRouter:
     '''Creates a distance vector router that can interact with other routers.'''
     def __init__(self, routerName):
         '''Constructor.  This method takes in a routerName and initializes all the necessary instance variables for a router.'''

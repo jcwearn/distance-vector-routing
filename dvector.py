@@ -1,4 +1,4 @@
-class DVector():
+class DVector:
     '''Entity class that contains data about distance vectors'''
     def __init__(self, nodeName):
         '''Constructor. Takes in a string nodeName and sets the routes instance variable to contain nodeName with distance 0'''
