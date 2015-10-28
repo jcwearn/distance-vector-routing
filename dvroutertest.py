@@ -41,7 +41,7 @@ class TestDVRouter(unittest.TestCase):
         router1.addLink('B', 1.5)
         router1.addLink('C', 2)
         expectedTable = {'B': 1.5, 'C': 2}
-        self.assertEqual(router1.exportDistanceVector('B'), expectedTable)
+        self.assertEqual(router1.exportDistanceVector(), expectedTable)
         
     def test_importDistanceVectors(self):
         '''Test importing a list of distance vectors.  It should raise a KeyError if the vector does not come from a neighbor'''
