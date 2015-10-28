@@ -37,9 +37,28 @@ class TestDVRouter(unittest.TestCase):
         
     def test_exportDistanceVector(self):
         '''Test exporting distance vectors to a neighbor. If split horizon is on, should not advertize a route whose first hop is some neighbor to that neighbor'''
+        router1 = dvrouter.DVRouter('A')
+        router1.addLink('B', 1.5)
+        router1.addLink('C', 2)
+        expectedTable = {'A': 0, 'C': 2, 'B': 1.5}
+        self.assertEqual(router1.exportDistanceVector('B'), expectedTable)
+        
     def test_importDistanceVectors(self):
         '''Test importing a list of distance vectors.  It should raise a KeyError if the vector does not come from a neighbor'''
+        router1 = dvrouter.DVRouter('A')
+        router1.addLink('B', 1.5)
+        router1.addLink('C', 2)
+        router2 = dvrouter.DVRouter('B')
+        router2.addLink('A', 1.5)
+        router2.addLink('C', 4)
+        neighborTable = router2.getRoutingTable()
+        expectedTable = {'A': 1.5, 'C': 4, 'B': 0}
+        router1.importDistanceVectors(neighborTable)
+        self.assertEqual(router1.getImportedTable(), expectedTable)        
+        
     def test_updateRoutingTable(self):
         '''Test updating the routing table via the Bellman-Ford algorithm'''
+
+        
 if __name__ == '__main__':
     unittest.main()        
