@@ -30,7 +30,10 @@ class DVRouter():
     def updateRoutingTable(self):
         graph = self.getImportedTables()
         source = self.getRouterName()
-        d, p = bellmanFord(graph, source)
+        neighbors = self.getRoutingTableExclusive()
+        distance, firstHop = bellmanFord(graph, source, neighbors)
+        print distance
+        print firstHop 
 
     def formatNeighborTables(self, neighbors):
         neighborTables = {}
