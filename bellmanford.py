@@ -13,16 +13,17 @@ def relax(node, neighbor, graph, distance, predecessor):
         distance[neighbor]  = distance[node] + graph[node][neighbor]
         predecessor[neighbor] = node
 
-def calcFirstHop(distance, predecessor, source, neighbors):
+def calcFirstHop(predecessor, source, neighbors):
     firstHop = predecessor.copy()
     for key, value in firstHop.iteritems():
-        if key == source:
-            firstHop[key] = key
-        elif value == source and key != source:
+        '''set correct first hop for each key based on the predecessor'''
+        if key == source or value == source and key != source:
             firstHop[key] = key
         elif key not in neighbors:
-            if value not in neighbors:
+            if value in neighbors:
                 firstHop[key] = firstHop[value]
+            else:
+                firstHop[key] = firstHop[firstHop[value]]
 
     return firstHop
 
@@ -36,5 +37,5 @@ def bellmanFord(graph, source, neighbors):
                 '''relax graph for each neighbor node'''
                 relax(u, v, graph, distance, predecessor) 
 
-    firstHop = calcFirstHop(distance, predecessor, source, neighbors)
+    firstHop = calcFirstHop(predecessor, source, neighbors)
     return distance, firstHop
