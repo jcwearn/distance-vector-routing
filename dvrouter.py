@@ -2,14 +2,18 @@ import dvector
 
 class DVRouter():
     def __init__(self, routerName):
-        routingTable = dvector.DVector(routerName)
-        self.routingTable = routingTable.getRoutes()
+        distanceVector = dvector.DVector(routerName)
+        routingTable = distanceVector.getRoutes
+        self.dvector  = distanceVector
+        self.routingTable = distanceVector.getRoutes()
         
-    def addLink():
-        pass
+    def addLink(self, neighbor, dist):
+        self.dvector.loadRoute(neighbor, dist)
+        self.routingTable = self.getDVector().getRoutes()
 
-    def removeLink():
-        pass
+    def removeLink(self, neighbor):
+        self.dvector.removeRoute(neighbor)
+        self.routingTable = self.getDVector().getRoutes()
 
     def exportDistanceVector(neighbor):
         pass
@@ -20,5 +24,8 @@ class DVRouter():
     def updateRoutingTable():
         pass
 
+    def getDVector(self):
+        return self.dvector
+    
     def getRoutingTable(self):
         return self.routingTable
