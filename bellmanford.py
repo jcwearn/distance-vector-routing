@@ -11,8 +11,8 @@ def initialize(graph, source):
 
 def relax(node, neighbor, graph, distance, predecessor):
     '''Relaxes the distance value for a given node in a graph.  It updates the distance and predecessor dictionary if the distance between the node and it's neighbor is smaller than what is already held in the distance dictionary.  This function takes in a node, it's neighbor node, the full graph, the distance dictrionary, and the predecessor dictionary'''
-    if distance[neighbor] > distance[node] + graph[node][neighbor]:
-        distance[neighbor]  = distance[node] + graph[node][neighbor]
+    if distance[neighbor] > distance[node] + float(graph[node][neighbor]):
+        distance[neighbor]  = distance[node] + float(graph[node][neighbor])
         predecessor[neighbor] = node
 
 def calcFirstHop(predecessor, source, neighbors):
