@@ -20,12 +20,10 @@ def calcFirstHop(predecessor, source, neighbors):
     firstHop = predecessor.copy()
     for key, value in firstHop.iteritems():
         '''set correct first hop for each key based on the predecessor'''
-        if key == source or value == source and key != source:
+        if key == source or (value == source and key != source):
             firstHop[key] = key
         elif key not in neighbors:
-            if value in neighbors:
-                firstHop[key] = firstHop[value]
-            else:
+            if value not in neighbors:
                 firstHop[key] = firstHop[firstHop[value]]
 
     return firstHop

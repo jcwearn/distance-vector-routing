@@ -116,7 +116,7 @@ class TestDVRouter(unittest.TestCase):
         self.assertEqual(firstHop['A'], 'A')
         self.assertEqual(firstHop['B'], 'B')
         self.assertEqual(firstHop['C'], 'G')
-        self.assertEqual(firstHop['F'], 'G')
+        self.assertEqual(firstHop['F'], 'C')
         routingTable = router1.getRoutingTable()
         self.assertEqual(routingTable['A'], 0)
         self.assertEqual(routingTable['B'], 1.5)
